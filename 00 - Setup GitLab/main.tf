@@ -140,6 +140,6 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 }
 
 output "ipaddres" {
-      description = "Tu instancia de GitLab va a estar disponible en esta IP en 7 minutos:"
+      description = "IP Publica es:"
       value = azurerm_public_ip.myterraformpublicip.ip_address
        }
