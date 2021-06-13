@@ -1,0 +1,21 @@
+stages:
+  - Install-Web-Server
+  - deploy
+
+Install-Web-Server:
+  stage: Install-Web-Server
+  allow_failure: true
+  script:
+  - sudo apt-get install apache2 -y
+  only:
+  - master
+
+deploy:
+  allow_failure: false
+  stage: deploy
+  script:
+  - sudo chmod 777 -R /var/www
+  - sudo echo "Hola Curso, como estan hoy?" > /var/www/html/index.html
+  only:
+  - master
+

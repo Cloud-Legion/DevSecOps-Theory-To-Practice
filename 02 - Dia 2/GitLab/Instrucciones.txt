@@ -1,0 +1,9 @@
+### Crear pipeline basico con un hola mundo en nginx docker ###
+conectarse al server web-server por ssh y ejecutar el siguiente comando:
+sudo gitlab-runner register
+sudo usermod -aG docker gitlab-runner
+
+### Crear pipeline basico con un hola mundo en nginx ###
+sudo usermod -a -G sudo gitlab-runner
+sudo visudo
+gitlab-runner ALL=(ALL) NOPASSWD: ALL
