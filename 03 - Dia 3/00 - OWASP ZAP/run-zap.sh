@@ -1,0 +1,1 @@
+docker run --rm -v $(pwd):/zap/wrk/:rw -t ictu/zap2docker-weekly zap-baseline.py -I -j -t http://$1:8080/WebGoat -r zapreport.html  --hook=/zap/auth_hook.py -z "auth.loginurl=http://$1:8080/WebGoat/login.mvc auth.username="clouduser" auth.password="password" auth.auto=1"
