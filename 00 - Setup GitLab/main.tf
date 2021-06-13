@@ -139,6 +139,19 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     }
 }
 
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "myterraformgroup" {
+  virtual_machine_id = azurerm_linux_virtual_machine.myterraformvm.id
+  location           = azurerm_resource_group.myterraformgroup.location
+  enabled            = true
+
+  daily_recurrence_time = "2015"
+  timezone              = "Argentina Standard Time"
+
+  notification_settings {
+    enabled         = false
+  }
+}
+
 output "ipaddres" {
       description = "IP Publica es:"
       value = azurerm_public_ip.myterraformpublicip.ip_address
