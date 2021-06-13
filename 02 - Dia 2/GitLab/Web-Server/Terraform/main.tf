@@ -13,7 +13,7 @@ provider "azurerm" {
 
 # Create a resource group if it doesn't exist
 resource "azurerm_resource_group" "myterraformgroup" {
-    name     = "Bandit"
+    name     = "Web-Server"
     location = "eastus"
 
     tags = {
@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "myterraformgroup" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
-    name                = "Bandit-vnet"
+    name                = "web-vnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
@@ -35,7 +35,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
-    name                 = "Bandit-subnet"
+    name                 = "web-subnet"
     resource_group_name  = azurerm_resource_group.myterraformgroup.name
     virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
     address_prefixes       = ["10.0.1.0/24"]
@@ -43,7 +43,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
-    name                         = "Bandit-public-ip"
+    name                         = "web-public-ip"
     location                     = "eastus"
     resource_group_name          = azurerm_resource_group.myterraformgroup.name
     allocation_method            = "Static"
@@ -55,7 +55,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
-    name                = "Bandit-sg"
+    name                = "web-sg"
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
@@ -78,7 +78,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
-    name                      = "NIC-Bandit"
+    name                      = "web-nic"
     location                  = "eastus"
     resource_group_name       = azurerm_resource_group.myterraformgroup.name
 
@@ -100,16 +100,21 @@ resource "azurerm_network_interface_security_group_association" "example" {
     network_security_group_id = azurerm_network_security_group.myterraformnsg.id
 }
 
+# Map data for cloud init
+data "template_file" "cloud_config" {
+  template = file("web-server.sh")
+}
+
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "Bandit-VM"
+    name                  = "Web-Server"
     location              = "eastus"
     resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B1ms"
 
     os_disk {
-        name              = "osdisk-Bandit"
+        name              = "osdisk-gitlab"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
@@ -121,10 +126,11 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         version   = "latest"
     }
 
-    computer_name  = "Bandit-VM"
+    computer_name  = "web-server"
     admin_username = "azureuser"
     admin_password = "Password1234!"
     disable_password_authentication = false
+    custom_data    = "${base64encode(data.template_file.cloud_config.rendered)}"
 
     tags = {
         environment = "Curso Telefonica"
@@ -144,7 +150,7 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "myterraformgroup" {
   }
 }
 
-output "ipaddress" {
+output "ipaddres" {
       description = "IP Publica es:"
       value = azurerm_public_ip.myterraformpublicip.ip_address
-    }
+       }

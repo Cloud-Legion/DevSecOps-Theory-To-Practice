@@ -102,7 +102,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 # Map data for cloud init
 data "template_file" "cloud_config" {
-  template = file("azure-user-data.sh")
+  template = file("gitlab-server.sh")
 }
 
 # Create virtual machine
