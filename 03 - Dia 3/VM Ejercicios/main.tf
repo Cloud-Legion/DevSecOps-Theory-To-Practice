@@ -15,29 +15,29 @@ provider "azurerm" {
 
 # Create a resource group if it doesn't exist
 resource "azurerm_resource_group" "myterraformgroup" {
-    name     = "Curso-TASA"
+    name     = "Exercises"
     location = "eastus"
 
     tags = {
-        environment = "Curso TASA"
+        environment = "Curso Telefonica"
     }
 }
 
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
-    name                = "myVnet"
+    name                = "exercises-vnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
     tags = {
-        environment = "Curso TASA"
+        environment = "Curso Telefonica"
     }
 }
 
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
-    name                 = "mySubnet"
+    name                 = "exercises-subnet"
     resource_group_name  = azurerm_resource_group.myterraformgroup.name
     virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
     address_prefixes       = ["10.0.1.0/24"]
@@ -45,19 +45,19 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
-    name                         = "myPublicIP"
+    name                         = "exercises-public-ip"
     location                     = "eastus"
     resource_group_name          = azurerm_resource_group.myterraformgroup.name
-    allocation_method            = "Static"
+    allocation_method            = "Dynamic"
 
     tags = {
-        environment = "Curso TASA"
+        environment = "Curso Telefonica"
     }
 }
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
-    name                = "myNetworkSecurityGroup"
+    name                = "exercises-sg"
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
@@ -74,13 +74,13 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     }
 
     tags = {
-        environment = "Curso TASA"
+        environment = "Curso Telefonica"
     }
 }
 
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
-    name                      = "myNIC"
+    name                      = "NIC-Exercises"
     location                  = "eastus"
     resource_group_name       = azurerm_resource_group.myterraformgroup.name
 
@@ -92,7 +92,7 @@ resource "azurerm_network_interface" "myterraformnic" {
     }
 
     tags = {
-        environment = "Curso TASA"
+        environment = "Curso Telefonica"
     }
 }
 
@@ -109,14 +109,14 @@ data "template_file" "cloud_config" {
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "GitLab-Server"
+    name                  = "Exercises-VM"
     location              = "eastus"
     resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B2s"
 
     os_disk {
-        name              = "myOsDisk"
+        name              = "osdisk-exercises"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
@@ -135,7 +135,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     custom_data    = "${base64encode(data.template_file.cloud_config.rendered)}"
 
     tags = {
-        environment = "Gitlab-Server"
+        environment = "Curso Telefonica"
     }
 }
 
