@@ -1,5 +1,3 @@
-#### Deploy a GitLab Server CE Edition using Terraform ####
-
 # Configure the Microsoft Azure Provider
 terraform {
   required_providers {
@@ -15,7 +13,7 @@ provider "azurerm" {
 
 # Create a resource group if it doesn't exist
 resource "azurerm_resource_group" "myterraformgroup" {
-    name     = "OwaspZAP"
+    name     = "RetireJS"
     location = "eastus"
 
     tags = {
@@ -25,7 +23,7 @@ resource "azurerm_resource_group" "myterraformgroup" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
-    name                = "OwaspZAP-vnet"
+    name                = "RetireJS-vnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
@@ -37,7 +35,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
-    name                 = "OwaspZAP-subnet"
+    name                 = "RetireJS-subnet"
     resource_group_name  = azurerm_resource_group.myterraformgroup.name
     virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
     address_prefixes       = ["10.0.1.0/24"]
@@ -45,7 +43,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
-    name                         = "OwaspZAP-public-ip"
+    name                         = "RetireJS-public-ip"
     location                     = "eastus"
     resource_group_name          = azurerm_resource_group.myterraformgroup.name
     allocation_method            = "Static"
@@ -57,7 +55,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
-    name                = "OwaspZAP-sg"
+    name                = "RetireJS-sg"
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
@@ -80,7 +78,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
-    name                      = "NIC-OwaspZAP"
+    name                      = "NIC-RetireJS"
     location                  = "eastus"
     resource_group_name       = azurerm_resource_group.myterraformgroup.name
 
@@ -102,21 +100,16 @@ resource "azurerm_network_interface_security_group_association" "example" {
     network_security_group_id = azurerm_network_security_group.myterraformnsg.id
 }
 
-# Map data for cloud init
-data "template_file" "cloud_config" {
-  template = file("azure-user-data.sh")
-}
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "OwaspZAP-VM"
+    name                  = "RetireJS-VM"
     location              = "eastus"
     resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B2s"
 
     os_disk {
-        name              = "osdisk-OwaspZAP"
+        name              = "osdisk-RetireJS"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
@@ -128,11 +121,10 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         version   = "latest"
     }
 
-    computer_name  = "OwaspZAP-VM"
+    computer_name  = "RetireJS-VM"
     admin_username = "azureuser"
     admin_password = "Password1234!"
     disable_password_authentication = false
-    custom_data    = "${base64encode(data.template_file.cloud_config.rendered)}"
 
     tags = {
         environment = "Curso Telefonica"

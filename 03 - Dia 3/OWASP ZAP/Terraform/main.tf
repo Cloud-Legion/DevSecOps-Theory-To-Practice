@@ -13,7 +13,7 @@ provider "azurerm" {
 
 # Create a resource group if it doesn't exist
 resource "azurerm_resource_group" "myterraformgroup" {
-    name     = "GitLab"
+    name     = "OwaspZAP"
     location = "eastus"
 
     tags = {
@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "myterraformgroup" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "myterraformnetwork" {
-    name                = "gitlab-vnet"
+    name                = "OwaspZAP-vnet"
     address_space       = ["10.0.0.0/16"]
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
@@ -35,7 +35,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
-    name                 = "gitlab-subnet"
+    name                 = "OwaspZAP-subnet"
     resource_group_name  = azurerm_resource_group.myterraformgroup.name
     virtual_network_name = azurerm_virtual_network.myterraformnetwork.name
     address_prefixes       = ["10.0.1.0/24"]
@@ -43,7 +43,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "myterraformpublicip" {
-    name                         = "gitlab-public-ip"
+    name                         = "OwaspZAP-public-ip"
     location                     = "eastus"
     resource_group_name          = azurerm_resource_group.myterraformgroup.name
     allocation_method            = "Static"
@@ -55,7 +55,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
-    name                = "gitlab-sg"
+    name                = "OwaspZAP-sg"
     location            = "eastus"
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
@@ -78,7 +78,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
-    name                      = "NIC-Gitlab"
+    name                      = "NIC-OwaspZAP"
     location                  = "eastus"
     resource_group_name       = azurerm_resource_group.myterraformgroup.name
 
@@ -107,14 +107,14 @@ data "template_file" "cloud_config" {
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
-    name                  = "GitLab-Server"
+    name                  = "OwaspZAP-VM"
     location              = "eastus"
     resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B2s"
 
     os_disk {
-        name              = "osdisk-gitlab"
+        name              = "osdisk-OwaspZAP"
         caching           = "ReadWrite"
         storage_account_type = "Premium_LRS"
     }
@@ -126,7 +126,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         version   = "latest"
     }
 
-    computer_name  = "gitlab-server"
+    computer_name  = "OwaspZAP-VM"
     admin_username = "azureuser"
     admin_password = "Password1234!"
     disable_password_authentication = false
@@ -150,7 +150,7 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "myterraformgroup" {
   }
 }
 
-output "ipaddres" {
+output "ipaddress" {
       description = "IP Publica es:"
       value = azurerm_public_ip.myterraformpublicip.ip_address
-       }
+    }
