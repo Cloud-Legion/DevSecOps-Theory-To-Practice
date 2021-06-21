@@ -21,6 +21,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     }
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
