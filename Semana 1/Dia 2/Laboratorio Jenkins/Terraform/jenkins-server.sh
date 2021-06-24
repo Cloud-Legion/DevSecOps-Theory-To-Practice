@@ -11,4 +11,11 @@ sudo apt install jenkins -y
 wget https://github.com/gohugoio/hugo/releases/download/v0.83.1/hugo_0.83.1_Linux-64bit.deb
 dpkg -i hugo_0.83.1_Linux-64bit.deb
 
+# Install Nginx Web Server
+apt-get install nginx -y
+
+# Fixed permissions
+chmod 777 -R /tmp
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 
