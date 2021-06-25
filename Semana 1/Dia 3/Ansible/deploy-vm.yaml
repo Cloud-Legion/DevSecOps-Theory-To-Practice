@@ -25,15 +25,15 @@
     register: output_ip_address
   - name: Dump public IP for VM which will be created
     debug:
-      msg: "The public IP is {{ output_ip_address.state.ip_address }}."
-  - name: Create Network Security Group that allows SSH
+      msg: "The public IP will be {{ output_ip_address.state.ip_address }}."
+  - name: Create Network Security Group that allows all traffic
     azure_rm_securitygroup:
       resource_group: myResourceGroup
       name: myNetworkSecurityGroup
       rules:
         - name: SSH
           protocol: Tcp
-          destination_port_range: 22
+          destination_port_range: "*"
           access: Allow
           priority: 1001
           direction: Inbound
