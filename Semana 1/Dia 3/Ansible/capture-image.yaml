@@ -1,0 +1,17 @@
+    - name: Stop VM before it can be generalized and image captured
+      azure_rm_virtualmachine:
+        resource_group: demo-rg
+        name: demo-ansible
+        started: no
+
+    - name: Generalize VM using version >= 2.8
+      azure_rm_virtualmachine:
+        resource_group: demo-rg
+        name: demo-ansible
+        generalized: true
+
+    - name: Create an image from a virtual machine
+      azure_rm_image:
+        resource_group: demo-rg
+        name: imagen-ansible-demo
+        source: demo-ansible
