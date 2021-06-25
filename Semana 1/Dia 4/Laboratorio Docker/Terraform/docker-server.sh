@@ -2,5 +2,6 @@
 # Install Docker
 apt-get update 
 apt-get install docker.io -y
+apt install npm -y
 
 
