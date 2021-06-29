@@ -127,7 +127,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     }
 
     computer_name  = "vault-server"
-    admin_username = "azureuser"
+    admin_username = "azureuser1"
     admin_password = "Password1234!"
     disable_password_authentication = false
     custom_data    = "${base64encode(data.template_file.cloud_config.rendered)}"
