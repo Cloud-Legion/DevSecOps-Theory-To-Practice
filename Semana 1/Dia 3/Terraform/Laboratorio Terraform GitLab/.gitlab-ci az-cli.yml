@@ -1,0 +1,38 @@
+image:
+  name: zenika/terraform-azure-cli:release-6.0_terraform-1.0.0_azcli-2.25.0
+
+before_script:
+  - rm -rf .terraform
+  - terraform --version
+  - terraform init
+ 
+stages:
+  - validate
+  - plan
+  - apply
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - az login -u xxxxxx@xxxxxx.xxx -p xxxxxx
+    - terraform plan -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - ./planfile
+
+apply:
+  stage: apply
+  script:
+    - az login -u xxxxxx@xxxxxx.xxx -p xxxxxx
+    - terraform apply -input=false "planfile"
+  only:
+    - main
+  dependencies:
+    - plan
