@@ -1,7 +1,0 @@
-apt-get update
-sudo apt install nodejs
-sudo apt install npm
-npm install -g retire
-git clone https://github.com/cr0hn/vulnerable-node.git
-npm install 
-retire
