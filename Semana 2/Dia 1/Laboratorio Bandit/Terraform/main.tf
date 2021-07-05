@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "myterraformgroup" {
     location = "eastus"
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
@@ -29,7 +29,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     resource_group_name = azurerm_resource_group.myterraformgroup.name
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
@@ -49,7 +49,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     allocation_method            = "Static"
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
@@ -72,7 +72,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     }
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
@@ -90,7 +90,7 @@ resource "azurerm_network_interface" "myterraformnic" {
     }
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
@@ -127,7 +127,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     disable_password_authentication = false
 
     tags = {
-        environment = "Curso Telefonica"
+        environment = "DevSecOps-Theory-To-Practice"
     }
 }
 
