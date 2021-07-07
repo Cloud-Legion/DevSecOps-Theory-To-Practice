@@ -1,0 +1,51 @@
+pipeline {
+	agent any
+	stages {
+		stage ("Git checkout"){
+			steps {
+				git branch: "master",
+					url: "https://github.com/PrabhuVignesh/movie-crud-flask.git"
+				sh "ls"
+			}
+		}
+		stage ("Python Flask Prepare"){
+			steps {
+				sh "pip3 install -r requirements.txt"
+			}
+
+		}
+		stage ("Unit Test"){
+			steps{
+				sh "python3 test_basic.py"
+			}
+		}
+		stage ("Python Bandit Security Scan"){
+			steps{
+				sh "cat report/banditResult.json"
+				sh "sh run_bandit.sh || true"
+				sh "ls"
+			}
+		}
+		stage ("Dependency Check with Python Safety"){
+			steps{
+				sh "docker run --rm --volume \$(pwd) pyupio/safety:latest safety check"
+				sh "docker run --rm --volume \$(pwd) pyupio/safety:latest safety check --json > report.json"
+			}
+		}
+		stage ("Static Analysis with python-taint"){
+			steps{
+				sh "docker run --rm --volume \$(pwd) vickyrajagopal/python-taint-docker pyt ."
+			}
+		}
+		stage ("Run Application"){
+			steps{
+				sh "python3 movie.py &"
+			}
+		}
+		stage ("Dynamic Analysis - DAST with OWASP ZAP") {
+			steps {
+				sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://10.0.1.4:5000/ || true"
+			}
+		}
+	}
+}
