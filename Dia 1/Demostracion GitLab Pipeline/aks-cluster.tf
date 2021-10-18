@@ -11,8 +11,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     }
 
     service_principal {
-        client_id     = "insert_here_information"
-        client_secret = "insert_here_information"
+        client_id     = ""
+        client_secret = ""
     }
 
     network_profile {

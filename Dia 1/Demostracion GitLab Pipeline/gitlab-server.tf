@@ -127,8 +127,8 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     }
 
     computer_name  = "gitlab-server"
-    admin_username = "azureuser"
-    admin_password = "Password1234!"
+    admin_username = ""
+    admin_password = ""
     disable_password_authentication = false
     custom_data    = "${base64encode(data.template_file.cloud_config.rendered)}"
 
