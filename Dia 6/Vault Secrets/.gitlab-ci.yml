@@ -9,9 +9,6 @@ vault_secrets:
    - echo $CI_COMMIT_REF_NAME
    - echo $CI_COMMIT_REF_PROTECTED
 
-   # Instalo curl
-   - apk add -q curl jq vault
-
    # Obtengo el vault token
    - export VAULT_TOKEN=$SECRET_TOKEN
-   - curl -H "X-Vault-Token:$VAULT_TOKEN" -X GET http://PUBLIC_VAULT_URL:8200/v1/kv/data/app/test | jq '.data.data'
+   - curl -H "X-Vault-Token:$VAULT_TOKEN" -X GET http://PUBLIC_VAULT_URL:8200/v1/kv/app/test | jq '.data'
