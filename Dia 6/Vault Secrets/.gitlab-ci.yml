@@ -5,6 +5,7 @@ vault_secrets:
   stage: get_secrets
   image: alpine:latest
   script:
+   - apk add curl jq
    # hago print de los atributos del job
    - echo $CI_COMMIT_REF_NAME
    - echo $CI_COMMIT_REF_PROTECTED
