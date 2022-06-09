@@ -5,7 +5,7 @@
   - name: Create resource group
     azure_rm_resourcegroup:
       name: demo-rg
-      location: eastus
+      location: centralus
   - name: Create virtual network
     azure_rm_virtualnetwork:
       resource_group: demo-rg

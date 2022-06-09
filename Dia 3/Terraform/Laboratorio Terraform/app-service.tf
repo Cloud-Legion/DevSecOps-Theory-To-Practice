@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "demo-rg" {
   name     = "xxxxxx"
-  location = "eastus"
+  location = "centralus"
 }
 
 resource "azurerm_app_service_plan" "app-service-plan" {
