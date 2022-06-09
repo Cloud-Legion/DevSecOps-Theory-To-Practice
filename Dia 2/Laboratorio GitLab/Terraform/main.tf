@@ -108,7 +108,7 @@ data "template_file" "cloud_config" {
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
     name                  = "GitLab-Server"
-    location              = "eastus"
+    location              = "centralus"
     resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  = "Standard_B2s"
