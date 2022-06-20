@@ -1,0 +1,16 @@
+stages:
+ - get_secrets
+
+vault_secrets:
+  stage: get_secrets
+  image: alpine:latest
+  script:
+   # agrego dependencias
+   - apk add curl jq
+   # hago print de los atributos del job
+   - echo $CI_COMMIT_REF_NAME
+   - echo $CI_COMMIT_REF_PROTECTED
+
+   # Obtengo el vault token
+   - export VAULT_TOKEN=$SECRET_TOKEN
+   - curl -H "X-Vault-Token:$VAULT_TOKEN" -X GET http://PUBLIC_VAULT_URL:8200/v1/kv/app/test | jq '.data'
