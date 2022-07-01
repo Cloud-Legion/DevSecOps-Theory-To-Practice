@@ -102,7 +102,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 # Map data for cloud init
 data "template_file" "cloud_config" {
-  template = file("Jenkins-ZAP-server.sh")
+  template = file("jenkins-ZAP-server.sh")
 }
 
 # Create virtual machine
