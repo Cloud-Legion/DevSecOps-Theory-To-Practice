@@ -14,7 +14,6 @@ echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # Install Docker 
 apt-get install docker.io -y
 
-# Install Python + pip
+# Install Pip
 apt install python3-pip -y
-
 
